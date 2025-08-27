@@ -87,5 +87,25 @@ router.post('/seed-admin', async (req, res) => {
         return res.status(500).json({ message: err.message });
     }
 });
+function authMiddleware(roles = []) {
+  return (req, res, next) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ message: "No token provided" });
+
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded; // chứa { _id, username, role, ... }
+
+      if (roles.length && !roles.includes(req.user.role)) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+      next();
+    } catch (err) {
+      res.status(401).json({ message: "Invalid token" });
+    }
+  };
+}
 
 export default router;
+export const auth = authMiddleware; 
+// export default authMiddleware;
