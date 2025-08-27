@@ -51,6 +51,7 @@ app.get('/', (_, res) => res.send('API is running'));
 app.use('/api/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use(express.json());
 
 
 const port = process.env.PORT || 5000;
