@@ -81,7 +81,7 @@ export default function Login() {
       localStorage.setItem('username', data.username);
 
       if (data.role === 'admin') navigate('/admin/dashboard');
-      else navigate("./userDashboard");
+      else navigate("/user/dashboard");
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
       setError(err?.response?.data?.message || 'Login failed');
